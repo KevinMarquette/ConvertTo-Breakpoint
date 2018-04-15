@@ -1,5 +1,5 @@
 #requires -Modules InvokeBuild, PSDeploy, BuildHelpers, PSScriptAnalyzer, PlatyPS, Pester
-$script:ModuleName = 'PSGraph'
+$script:ModuleName = 'ConvertTo-Breakpoint'
 
 $script:Source = Join-Path $BuildRoot 'Module'
 $script:Output = Join-Path $BuildRoot output
