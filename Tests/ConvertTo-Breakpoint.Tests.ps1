@@ -16,8 +16,8 @@ at <ScriptBlock>, C:\workspace\ConvertTo-Breakpoint\testing.ps1: line 9
         ConvertTo-Breakpoint $obj -WhatIf
         ConvertTo-Breakpoint -ErrorRecord $obj -WhatIf
         ConvertTo-Breakpoint $obj -WhatIf -All
-
     }
+    
     It "Does not throw with multiple objects" {
         $obj = [pscustomobject]@{
             ScriptStackTrace = @'
