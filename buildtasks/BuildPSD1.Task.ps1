@@ -8,12 +8,12 @@ TaskX BuildPSD1 @{
         Copy-Item "$source\$ModuleName.psd1" -Destination $ManifestPath
 
 
-        $functions = Get-ChildItem "$ModuleName\Public\*.ps1" | Where-Object { $_.name -notmatch 'Tests'} | Select-Object -ExpandProperty basename      
+        $functions = Get-ChildItem "$source\Public\*.ps1" | Where-Object { $_.name -notmatch 'Tests'} | Select-Object -ExpandProperty basename      
         Set-ModuleFunctions -Name $ManifestPath -FunctionsToExport $functions
 
         Write-Output "  Detecting semantic versioning"
 
-        Import-Module ".\$ModuleName"
+        Import-Module $source\$ModuleName.psd1
         $commandList = Get-Command -Module $ModuleName
         Remove-Module $ModuleName
 

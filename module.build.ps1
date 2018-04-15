@@ -14,7 +14,7 @@ function TaskX($Name, $Parameters) {task $Name @Parameters -Source $MyInvocation
 
 Task Default Clean, Build, Pester, UpdateSource, Publish
 Task Build CopyToOutput, BuildPSM1, BuildPSD1
-Task Pester Build, ImportModule, UnitTests, FullTests
+Task Pester Build, ImportModule, FullTests
 Task Local Build, Pester, UpdateSource
 
 $taskList = Get-ChildItem $PSScriptRoot\BuildTasks\*.Task.ps1
