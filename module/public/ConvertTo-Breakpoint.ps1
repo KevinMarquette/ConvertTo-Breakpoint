@@ -4,10 +4,10 @@ function ConvertTo-Breakpoint
         .DESCRIPTION
         Converts an errorrecord to a breakpoint
 
-        .Example 
+        .Example
         $error[0] | ConvertTo-Breakpoint
 
-        .Example 
+        .Example
         $error[0] | ConvertTo-Breakpoint -All
     #>
     [CmdletBinding(SupportsShouldProcess)]
@@ -25,29 +25,31 @@ function ConvertTo-Breakpoint
         [switch]
         $All
     )
+    
     begin
     {
         $breakpointPattern = 'at .+, (?<Script>.+): line (?<Line>\d+)'
     }
+
     process
     {
-        foreach($node in $ErrorRecord)
+        foreach ($node in $ErrorRecord)
         {
             $trace = $node.ScriptStackTrace
-            if(-not [string]::IsNullOrEmpty($trace))
+            if (-not [string]::IsNullOrEmpty($trace))
             {
                 $lineList = $trace -split [System.Environment]::NewLine
-                foreach($line in $lineList)
+                foreach ($line in $lineList)
                 {
-                    if($line -match $breakpointPattern)
+                    if ($line -match $breakpointPattern)
                     {
-                        if($matches.Script -ne '<No file>' -and (Test-Path $matches.Script))
+                        if ($matches.Script -ne '<No file>' -and (Test-Path $matches.Script))
                         {
-                            if($PSCmdlet.ShouldProcess($line))
+                            if ($PSCmdlet.ShouldProcess($line))
                             {
                                 $breakpoint = @{
                                     Script = $matches.Script
-                                    Line = $matches.Line
+                                    Line   = $matches.Line
                                 }
                                 Set-PSBreakpoint @breakpoint
                             }
@@ -56,14 +58,14 @@ function ConvertTo-Breakpoint
                         {
                             continue
                         }
-                        
-                        if(-Not $PSBoundParameters.All)
+
+                        if (-Not $PSBoundParameters.All)
                         {
                             break
                         }
                     }
                 }
             }
-         }
+        }
     }
 }
