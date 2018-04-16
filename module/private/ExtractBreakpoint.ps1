@@ -7,6 +7,7 @@ function ExtractBreakpoint
     .EXAMPLE
     $error[0].ScriptStackTrace | ExtractBreakpoint
     #>
+    [OutputType('System.Collections.Hashtable')]
     [cmdletbinding()]
     param(
         # The ScriptStackTrace
