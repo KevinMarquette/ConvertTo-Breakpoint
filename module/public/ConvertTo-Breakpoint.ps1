@@ -41,14 +41,22 @@ function ConvertTo-Breakpoint
                 {
                     if($line -match $breakpointPattern)
                     {
-                        if($PSCmdlet.ShouldProcess($line))
+                        if($matches.Script -ne '<No file>' -and (Test-Path $matches.Script))
                         {
-                            $breakpoint = @{
-                                Script = $matches.Script
-                                Line = $matches.Line
+                            if($PSCmdlet.ShouldProcess($line))
+                            {
+                                $breakpoint = @{
+                                    Script = $matches.Script
+                                    Line = $matches.Line
+                                }
+                                Set-PSBreakpoint @breakpoint
                             }
-                            Set-PSBreakpoint @breakpoint
                         }
+                        else
+                        {
+                            continue
+                        }
+                        
                         if(-Not $PSBoundParameters.All)
                         {
                             break
