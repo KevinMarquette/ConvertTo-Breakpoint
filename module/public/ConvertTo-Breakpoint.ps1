@@ -37,7 +37,7 @@ function ConvertTo-Breakpoint
                 $message = '{0}:{1}' -f $breakpoint.Script,$breakpoint.Line
                 if($PSCmdlet.ShouldProcess($message))
                 {
-                    $breakpoint | Set-PSBreakpoint
+                    Set-PSBreakpoint @breakpoint
                     if (-Not $PSBoundParameters.All)
                     {
                         break

@@ -34,9 +34,10 @@ function ExtractBreakpoint
             {
                 if ($line -match $breakpointPattern)
                 {
-                    if ($matches.Script -ne '<No file>' -and (Test-Path $matches.Script))
+                    if ($matches.Script -ne '<No file>' -and 
+                        (Test-Path $matches.Script))
                     {
-                        [pscustomobject]@{
+                        @{
                             Script = $matches.Script
                             Line   = $matches.Line
                         }                                
