@@ -9,6 +9,10 @@ function ConvertTo-Breakpoint
 
         .Example
         $error[0] | ConvertTo-Breakpoint -All
+
+        .NOTES
+        This works the best in the ISE
+        VSCode requires the debugger to be running for Set-PSBreakpoint to work
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
