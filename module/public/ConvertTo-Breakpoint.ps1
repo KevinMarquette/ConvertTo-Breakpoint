@@ -34,7 +34,7 @@ function ConvertTo-Breakpoint
     {
         foreach ($node in $ErrorRecord)
         {
-            $breakpointList = $node.ScriptStackTrace | ExtractBreakpoint
+            $breakpointList = $node.InvocationInfo | ExtractBreakpoint
 
             foreach ($breakpoint in $breakpointList)
             {
@@ -47,7 +47,7 @@ function ConvertTo-Breakpoint
                         break
                     }
                 }
-            }                
+            }               
         }
     }
 }
