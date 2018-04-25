@@ -1,16 +1,15 @@
 Describe "function ConvertTo-Breakpoint" {
     Mock Set-PSBreakpoint {return $true}
     It "Does not throw when there is no input" {
-        ConvertTo-Breakpoint -ErrorRecord @{ScriptStackTrace=''}
+        ConvertTo-Breakpoint -ErrorRecord @{InvocationInfo=''}
     }
 
     It "Does not throw" {
         $obj = [pscustomobject]@{
-            ScriptStackTrace = @'
-at New-Error, C:\workspace\ConvertTo-Breakpoint\testing.ps1: line 2
-at Get-Error, C:\workspace\ConvertTo-Breakpoint\testing.ps1: line 6
-at <ScriptBlock>, C:\workspace\ConvertTo-Breakpoint\testing.ps1: line 9
-'@
+            InvocationInfo = [pscustomobject]@{
+                ScriptLineNumber = 2
+                ScriptName = "C:\workspace\ConvertTo-Breakpoint\testing.ps1" 
+            }
         }
         $obj | ConvertTo-Breakpoint
         $obj | ConvertTo-Breakpoint -All
@@ -21,11 +20,10 @@ at <ScriptBlock>, C:\workspace\ConvertTo-Breakpoint\testing.ps1: line 9
 
     It "Does not throw with multiple objects" {
         $obj = [pscustomobject]@{
-            ScriptStackTrace = @'
-at New-Error, C:\workspace\ConvertTo-Breakpoint\testing.ps1: line 2
-at Get-Error, C:\workspace\ConvertTo-Breakpoint\testing.ps1: line 6
-at <ScriptBlock>, C:\workspace\ConvertTo-Breakpoint\testing.ps1: line 9
-'@
+            InvocationInfo = [PSCustomObject]@{
+                ScriptLineNumber = 2
+                ScriptName = "C:\workspace\ConvertTo-Breakpoint\testing.ps1" 
+            }
         }
         $array = @($obj,$obj,$obj)
         $array | ConvertTo-Breakpoint
