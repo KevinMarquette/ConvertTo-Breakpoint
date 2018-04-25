@@ -2,49 +2,33 @@ function ExtractBreakpoint
 {
     <#
     .DESCRIPTION
-    Parses a script stack trace for breakpoints
+    Extracts line number and scriptname for breakpoints
 
     .EXAMPLE
-    $error[0].ScriptStackTrace | ExtractBreakpoint
+    $error[0].InvocationInfo | ExtractBreakpoint
     #>
     [OutputType('System.Collections.Hashtable')]
     [cmdletbinding()]
     param(
-        # The ScriptStackTrace
+        # The InvocationInfo
         [parameter(
             ValueFromPipeline
         )]
         [AllowNull()]
         [AllowEmptyString()]
         [Alias('InputObject')]
-        [string]
-        $ScriptStackTrace
+        $InvocationInfo
     )
-
-    begin
-    {
-        $breakpointPattern = 'at .+, (?<Script>.+): line (?<Line>\d+)'
-    }
 
     process
     {
-        if (-not [string]::IsNullOrEmpty($ScriptStackTrace))
+        if (-not [string]::IsNullOrEmpty($InvocationInfo.ScriptName) -and 
+            (Test-Path $InvocationInfo.ScriptName))
         {
-            $lineList = $ScriptStackTrace -split [System.Environment]::NewLine
-            foreach($line in $lineList)
-            {
-                if ($line -match $breakpointPattern)
-                {
-                    if ($matches.Script -ne '<No file>' -and 
-                        (Test-Path $matches.Script))
-                    {
-                        @{
-                            Script = $matches.Script
-                            Line   = $matches.Line
-                        }                                
-                    }
-                }
-            }
-        }
+            @{
+                Script = $InvocationInfo.ScriptName
+                Line   = $InvocationInfo.ScriptLineNumber
+            }                                
+        }       
     }
 }
